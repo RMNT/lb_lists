@@ -17,5 +17,5 @@ setuptools.setup(
     },
     license='MIT',
     packages=['lb_lists'],
-    install_requires=['requests', 'bs4', 'os', 'time', 'random', 're', 'pyquery', 'numpy'],
+    install_requires=['requests', 'bs4'],
 )
