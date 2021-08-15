@@ -1,7 +1,4 @@
 import setuptools
-
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
     
 setup(
     name='lb_lists',
@@ -11,9 +8,7 @@ setup(
     author='Raminta Urbonavičiūtė',
     author_email='urbonaviciuteraminta@gmail.com',
     license='MIT',
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    packages=['LBLists'],
+    packages=['lb_lists'],
     install_requires=['mpi4py>=2.0',
                       'numpy', 're', 'requests', 'bs4', 'os', 'random', 'time'                     
                       ],
