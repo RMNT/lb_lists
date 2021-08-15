@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
     
 setup(
-    name='LB Lists',
+    name='lb_lists',
     version='0.1.0',    
     description='a package for Letterboxd list comparison',
     url='https://github.com/RMNT/lb_lists',
