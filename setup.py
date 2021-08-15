@@ -1,26 +1,21 @@
 import setuptools
-    
-setup(
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     name='lb_lists',
-    version='0.1.0',    
-    description='a package for Letterboxd list comparison',
-    url='https://github.com/RMNT/lb_lists',
+    version='0.0.3',
     author='Raminta Urbonavičiūtė',
     author_email='urbonaviciuteraminta@gmail.com',
+    description='For getting unions of various lists from Letterboxd',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/RMNT/lb_lists',
+    project_urls = {
+        "Bug Tracker":"https://github.com/RMNT/lb_lists/issues"
+    },
     license='MIT',
     packages=['lb_lists'],
-    install_requires=['mpi4py>=2.0',
-                      'numpy', 're', 'requests', 'bs4', 'os', 'random', 'time'                     
-                      ],
-    classifiers=[
-        'Development Status :: 1 - Planning',
-        'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: BSD License',  
-        'Operating System :: POSIX :: Linux',        
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-    ],
+    install_requires=['requests', 'BeautifulSoup', 'os', 'time', 'random', 're', 'pyquery', 'numpy'],
 )
