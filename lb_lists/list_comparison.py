@@ -1,4 +1,7 @@
 from google.colab import drive
+import requests
+from bs4 import BeautifulSoup
+
 
 def conn_to_drive():
     drive.mount("/content/gdrive/")
