@@ -12,7 +12,7 @@ def get_watchlist(author:str, folder, title:str="Watchlist"):
   watchlist_url = 'https://letterboxd.com/' + author + '/watchlist'
   title = title + ' | ' + author
   movies = get_movies_v2(watchlist_url)
-  with open("gdrive/MyDrive/Letterboxd/" + title + ".txt", 'w+') as f:
+  with open(f"gdrive/MyDrive/{folder}/{title}.txt", 'w+') as f:
     for m in movies:
       f.write(m + '\n')
   return movies
