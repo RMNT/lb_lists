@@ -10,8 +10,8 @@ def conn_to_drive(remount:bool = False):
     drive.mount("/content/gdrive/", force_remount=remount)
 
 
-def _read_list(file_name):
-  movie_list = _read_from_file(file_name)
+def _read_list(file_name, folder):
+  movie_list = _read_from_file(file_name, folder)
   if len(movie_list[-1]) == 0:
     movie_list = movie_list[:-1]
   return movie_list
@@ -25,7 +25,7 @@ def _read_from_file(file_name:str, folder:str):
   return movies
 
 
-def compare_lists(lists: list, folder, user: str, union: bool = True,
+def compare_lists(lists: list, folder:str, user: str, union: bool = True,
                   watched: bool = False, watched_list=None, random_movie: bool = False,
                   random_movie_size: int = 1, length: bool = False) -> list:
     movies = []
@@ -37,7 +37,7 @@ def compare_lists(lists: list, folder, user: str, union: bool = True,
         if not os.path.exists(file_path):
             print(f'There is no {file_name}.')
             continue
-        movies.extend(list(set(_read_list(file_name))))
+        movies.extend(list(set(_read_list(file_name, folder))))
 
     movies = list(set([x for x in movies if movies.count(x) > (len(lists) - 1)]))
 
@@ -99,7 +99,7 @@ def _get_title_and_year(link:str):
   return f'{title}, {year}'
 
 
-def get_new_list(author, folder, print_links, range_:tuple=None):
+def get_new_list(author, folder, print_links:bool=False, range_:tuple=None):
   url = author
   soup = _get_html(url)
   author = url.split('/')[3]
