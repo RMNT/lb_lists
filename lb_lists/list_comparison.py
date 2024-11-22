@@ -10,6 +10,44 @@ def conn_to_drive(remount:bool = False):
     drive.mount("/content/gdrive/", force_remount=remount)
 
 
+def movie_strip(movie):
+  movie = movie.strip()
+  movie = movie.lstrip()
+
+  return movie
+
+
+def add_watched(movie:str, year:str, folder:str, user:str) -> None:
+  movie = movie_strip(movie)
+
+  movie_year = f'{movie}, {year}'
+  title = f'Watched | {user}'
+
+  with open(f'gdrive/MyDrive/{folder}/{title}.txt', 'a') as f:
+    f.write(f'{movie_year}\n')
+
+  watchlist = f'gdrive/MyDrive/{folder}/Watched | {user}.txt'
+
+  if os.path.exists(watchlist):
+    watchedl_movies = _read_list(watchlist)
+    if movie_year in watchedl_movies:
+      watchedl_movies.remove(movie_year)
+
+  with open(f'gdrive/MyDrive/{folder}/Watched | {user}.txt', 'w') as f:
+    for wlm in watchedl_movies:
+        f.write(f'{wlm}\n')
+
+
+def add_watchlisted(movie:str, year:str, folder:str, user:str):
+  movie = movie_strip(movie)
+
+  movie_year = f'{movie}, {year}'
+  title = f'Watchlist | {user}'
+
+  with open(f'gdrive/MyDrive/{folder}/{title}.txt', 'a') as f:
+    f.write(movie_year+'\n')
+
+
 def _read_list(file_name, folder):
   movie_list = _read_from_file(file_name, folder)
   if len(movie_list[-1]) == 0:
