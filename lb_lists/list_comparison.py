@@ -32,12 +32,13 @@ def compare_lists(lists: list, folder:str, user: str, union: bool = True,
     for lst in lists:
         file_name = lst
         file_path = os.path.join(f"gdrive/MyDrive/{folder}", file_name)
-        print(file_path)
+
         if '.txt' not in file_path:
           file_path += '.txt'
         if not os.path.exists(file_path):
             print(f'There is no {file_name}.')
             continue
+          
         movies.extend(list(set(_read_list(file_name, folder))))
 
     movies = list(set([x for x in movies if movies.count(x) > (len(lists) - 1)]))
