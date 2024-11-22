@@ -8,7 +8,7 @@ def conn_to_drive(remount:bool = False):
     drive.mount("/content/gdrive/", force_remount=remount)
 
 
-def get_watchlist(author:str, title:str="Watchlist"):
+def get_watchlist(author:str, folder, title:str="Watchlist"):
   watchlist_url = 'https://letterboxd.com/' + author + '/watchlist'
   title = title + ' | ' + author
   movies = get_movies_v2(watchlist_url)
