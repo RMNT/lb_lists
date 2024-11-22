@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 import time
 
 
-def conn_to_drive():
-    drive.mount("/content/gdrive/")
+def conn_to_drive(remount:bool = False):
+    drive.mount("/content/gdrive/", force_remount=remount)
 
 
 def get_watchlist(author:str, title:str="Watchlist"):
