@@ -12,7 +12,7 @@ def get_watchlist(author:str, folder, title:str="Watchlist", print_links:bool=Fa
   watchlist_url = f'https://letterboxd.com/{author}/watchlist'
   title = f'{title} | {author}'
   
-  movies = get_movies_v2(watchlist_url, print_links)
+  movies = _get_movies_v2(watchlist_url, print_links)
   
   with open(f"gdrive/MyDrive/{folder}/{title}.txt", 'w+') as f:
     for m in movies:
@@ -23,27 +23,27 @@ def get_watched(author:str, folder, title:str="Watched", print_links:bool=False)
   watched_url = 'https://letterboxd.com/' + author + '/films'
   title = f'{title} | {author}'
 
-  movies = get_movies_v2(watched_url, print_links)
+  movies = _get_movies_v2(watched_url, print_links)
 
   with open(f"gdrive/MyDrive/{folder}/{title}.txt", 'w') as f:
     for m in movies:
       f.write(m+'\n')
 
 
-def get_html(url):
+def _get_html(url):
   soup = requests.get(url)
   return BeautifulSoup(soup.content, 'html.parser')
 
 
-def get_last_page(soup):
+def _get_last_page(soup):
   check = soup.find("li", class_="paginate-page")
   if check:
     return int(soup.find_all("li", class_="paginate-page")[-1].getText())
   return 1
 
 
-def get_title_and_year(link:str):
-  movie_page = get_html(link)
+def _get_title_and_year(link:str):
+  movie_page = _get_html(link)
   title_year = str(movie_page.find("meta", property="og:title")["content"])
   if "(" in title_year:
     title = title_year.split("(")[0][:-1]
@@ -54,11 +54,11 @@ def get_title_and_year(link:str):
   return f'{title}, {year}'
 
 
-def get_movies_v2(url:str, print_links=False, range_:tuple=None):
-  soup = get_html(url)
+def _get_movies_v2(url:str, print_links=False, range_:tuple=None):
+  soup = _get_html(url)
   movies = []
   end = False
-  last_page = get_last_page(soup)
+  last_page = _get_last_page(soup)
 
   if range_:
     first, last = range_
@@ -71,7 +71,7 @@ def get_movies_v2(url:str, print_links=False, range_:tuple=None):
   for p in range(first, last):
     print(f'page {str(p)}/{str(last_page)}')
     page_url = f'{url}/page/{str(p)}'
-    soup = get_html(page_url)
+    soup = _get_html(page_url)
     soup = soup.find_all("div", class_="poster")
     soup = str(soup).split(' ')
     soup = [s for s in soup if 'data-target-link=' in s]
@@ -82,6 +82,6 @@ def get_movies_v2(url:str, print_links=False, range_:tuple=None):
       movie_link = f'https://letterboxd.com/film/{link}'
       if print_links:
         print(f"   {str(movie_link)}")
-      title_year = get_title_and_year(movie_link)
+      title_year = _get_title_and_year(movie_link)
       movies.append(f'{title_year}')
   return movies
