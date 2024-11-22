@@ -65,14 +65,14 @@ def get_watchlist(author:str, folder, title:str="Watchlist", print_links:bool=Fa
 
 
 def get_watched(author:str, folder, title:str="Watched", print_links:bool=False):
-  watched_url = 'https://letterboxd.com/' + author + '/films'
+  watched_url = f'https://letterboxd.com/{author}/films'
   title = f'{title} | {author}'
 
   movies = _get_movies_v2(watched_url, print_links)
 
   with open(f"gdrive/MyDrive/{folder}/{title}.txt", 'w') as f:
     for m in movies:
-      f.write(m+'\n')
+      f.write(f'{m}\n')
 
 
 def _get_html(url):
