@@ -8,17 +8,18 @@ def conn_to_drive(remount:bool = False):
     drive.mount("/content/gdrive/", force_remount=remount)
 
 
-def get_watchlist(author:str, folder, title:str="Watchlist"):
-  watchlist_url = 'https://letterboxd.com/' + author + '/watchlist'
-  title = title + ' | ' + author
-  movies = get_movies_v2(watchlist_url)
+def get_watchlist(author:str, folder, title:str="Watchlist", print_links:bool=False):
+  watchlist_url = f'https://letterboxd.com/{author}/watchlist'
+  title = f'{title} | {author}'
+  
+  movies = get_movies_v2(watchlist_url, print_links)
+  
   with open(f"gdrive/MyDrive/{folder}/{title}.txt", 'w+') as f:
     for m in movies:
-      f.write(m + '\n')
-  return movies
+      f.write(f'{m}\n')
 
 
-def get_watched(author:str, folder, title:str="Watched", print_links=False):
+def get_watched(author:str, folder, title:str="Watched", print_links:bool=False):
   watched_url = 'https://letterboxd.com/' + author + '/films'
   title = f'{title} | {author}'
 
@@ -27,7 +28,6 @@ def get_watched(author:str, folder, title:str="Watched", print_links=False):
   with open(f"gdrive/MyDrive/{folder}/{title}.txt", 'w') as f:
     for m in movies:
       f.write(m+'\n')
-  return movies
 
 
 def get_html(url):
