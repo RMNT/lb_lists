@@ -33,9 +33,9 @@ def add_watched(movie:str, year:str, folder:str, user:str) -> None:
     if movie_year in watchedl_movies:
       watchedl_movies.remove(movie_year)
 
-  with open(f'gdrive/MyDrive/{folder}/Watched | {user}.txt', 'w') as f:
-    for wlm in watchedl_movies:
-        f.write(f'{wlm}\n')
+    with open(f'gdrive/MyDrive/{folder}/Watched | {user}.txt', 'w') as f:
+      for wlm in watchedl_movies:
+          f.write(f'{wlm}\n')
 
 
 def add_watchlisted(movie:str, year:str, folder:str, user:str):
