@@ -2,10 +2,55 @@ from google.colab import drive
 import requests
 from bs4 import BeautifulSoup
 import time
+import random
+import os
 
 
 def conn_to_drive(remount:bool = False):
     drive.mount("/content/gdrive/", force_remount=remount)
+
+
+def _read_list(file_name):
+  movie_list = _read_from_file(file_name)
+  if len(movie_list[-1]) == 0:
+    movie_list = movie_list[:-1]
+  return movie_list
+
+
+def _read_from_file(file_name:str, folder:str):
+  if '.txt' not in file_name:
+    file_name +='.txt'
+  with open(f"gdrive/MyDrive/{folder}/{file_name}", "r") as f:
+          movies = f.read().split('\n')
+  return movies
+
+
+def compare_lists(lists: list, folder, user: str, union: bool = True,
+                  watched: bool = False, watched_list=None, random_movie: bool = False,
+                  random_movie_size: int = 1, length: bool = False) -> list:
+    movies = []
+    for lst in lists:
+        file_name = lst
+        file_path = os.path.join(f"gdrive/MyDrive/{folder}", file_name)
+        if '.txt' not in file_path:
+          file_path += '.txt'
+        if not os.path.exists(file_path):
+            print(f'There is no {file_name}.')
+            continue
+        movies.extend(list(set(_read_list(file_name))))
+
+    movies = list(set([x for x in movies if movies.count(x) > (len(lists) - 1)]))
+
+    if watched and watched_list:
+        watched_set = set(_read_list(watched_list))
+        movies = [m for m in movies if m not in watched_set]
+
+    if random_movie:
+        return random.sample(movies, random_movie_size)
+    elif length:
+        return len(movies)
+    else:
+        return movies
 
 
 def get_watchlist(author:str, folder, title:str="Watchlist", print_links:bool=False):
