@@ -44,7 +44,7 @@ def compare_lists(lists: list, folder:str, union: bool = True,
     movies = list(set([x for x in movies if movies.count(x) > (len(lists) - 1)]))
 
     if watched and watched_list:
-        watched_set = set(_read_list(watched_list))
+        watched_set = set(_read_list(watched_list, folder))
         movies = [m for m in movies if m not in watched_set]
 
     if random_movie:
