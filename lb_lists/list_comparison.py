@@ -99,6 +99,31 @@ def _get_title_and_year(link:str):
   return f'{title}, {year}'
 
 
+def get_new_list(author, folder, print_links, range_:tuple=None):
+  url = author
+  soup = _get_html(url)
+  author = url.split('/')[3]
+  lst = soup.find_all('h1', class_='title-1')
+  lst = str(lst[0])
+  lst = lst.split('</')[0].split('>')[1]
+  lst = lst.replace('/', ' ')
+  file_name = lst + ' | ' + author
+  last = _get_last_page(soup)
+  print(f'{url} {str(last)}')
+  if range_:
+    first, _ = range_
+    if first == 1:
+      mode = 'w+'
+    else:
+      mode = 'a'
+  else:
+    mode = 'w+'
+  movie_list = _get_movies_v2(url, print_links=print_links, range_=range_)
+  with open(f'gdrive/MyDrive/{folder}/{file_name}.txt', mode) as f:
+    for movie in movie_list:
+      f.write(f'{movie}\n')
+
+
 def _get_movies_v2(url:str, print_links=False, range_:tuple=None):
   soup = _get_html(url)
   movies = []
