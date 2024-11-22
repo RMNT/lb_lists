@@ -25,7 +25,7 @@ def _read_from_file(file_name:str, folder:str):
   return movies
 
 
-def compare_lists(lists: list, folder:str, user: str, union: bool = True,
+def compare_lists(lists: list, folder:str, union: bool = True,
                   watched: bool = False, watched_list=None, random_movie: bool = False,
                   random_movie_size: int = 1, length: bool = False) -> list:
     movies = []
@@ -38,7 +38,7 @@ def compare_lists(lists: list, folder:str, user: str, union: bool = True,
         if not os.path.exists(file_path):
             print(f'There is no {file_name}.')
             continue
-          
+
         movies.extend(list(set(_read_list(file_name, folder))))
 
     movies = list(set([x for x in movies if movies.count(x) > (len(lists) - 1)]))
@@ -106,12 +106,16 @@ def get_new_list(author, folder, print_links:bool=False, range_:tuple=None):
   soup = _get_html(url)
   author = url.split('/')[3]
   lst = soup.find_all('h1', class_='title-1')
+  
   lst = str(lst[0])
   lst = lst.split('</')[0].split('>')[1]
   lst = lst.replace('/', ' ')
   file_name = lst + ' | ' + author
+  
   last = _get_last_page(soup)
+  
   print(f'{url} {str(last)}')
+  
   if range_:
     first, _ = range_
     if first == 1:
@@ -120,7 +124,9 @@ def get_new_list(author, folder, print_links:bool=False, range_:tuple=None):
       mode = 'a'
   else:
     mode = 'w+'
+  
   movie_list = _get_movies_v2(url, print_links=print_links, range_=range_)
+  
   with open(f'gdrive/MyDrive/{folder}/{file_name}.txt', mode) as f:
     for movie in movie_list:
       f.write(f'{movie}\n')
