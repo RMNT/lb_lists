@@ -1,6 +1,7 @@
 from google.colab import drive
 import requests
 from bs4 import BeautifulSoup
+import time
 
 
 def conn_to_drive():
