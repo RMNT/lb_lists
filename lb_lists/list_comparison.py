@@ -83,7 +83,46 @@ def get_full_pages(link:str, file_:str, folder):
   return last_index.index(None),last_index
 
 
-def rewrite_list_up_to(file:str, index:int,folder):
+def _get_watched_num(user: str, this_year=False):
+  url = f'http://www.letterboxd.com/{user}'
+  
+  soup = _get_html(url)
+  
+  soup = soup.find_all("span", class_="value")
+  inter = str(soup[0]).split('</')[0].split('>')[-1]
+  
+  if this_year:
+    inter = str(soup[1]).split('</')[0].split('>')[-1]
+  
+  if ',' in inter:
+    inter = inter.replace(',', '')
+  
+  return int(inter)
+
+
+
+def get_watched_comparison(your_username:str, users:list=[], all:bool=False, this_year=False):
+  if your_username in users:
+    users.remove(your_username)
+  you = _get_watched_num(your_username, this_year=this_year)
+
+  user_dict = {}
+
+  for u in users:
+    n = _get_watched_num(u, this_year=this_year)
+    if not all:
+      if n > you:
+        user_dict[u] = n
+    else:
+      user_dict[u] = n
+  user_dict = dict(sorted(user_dict.items(), key = lambda x: x[1], reverse = True))
+  for k, v in user_dict.items():
+    print(f'{k}: {v} | {int(round(100*v/you-100))}% | {v-you}')
+  if not all:
+    print(f'rmnt_: {you}')
+
+
+def rewrite_list_up_to(file:str, index:int, folder):
   with open(f'gdrive/MyDrive/{folder}/{file}', 'r') as f:
     films = f.read().split('\n')
   films = films[:index]
