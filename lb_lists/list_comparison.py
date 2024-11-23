@@ -100,6 +100,26 @@ def _get_watched_num(user: str, this_year=False):
   return int(inter)
 
 
+def get_percentage_watched(user_list, your_username, l:list):
+  if your_username in user_list:
+    user_list.remove(your_username)
+
+  for us in user_list:
+    watched_movies = compare_lists([f'Watched | {us}.txt', f'{l}.txt'])
+    watchlisted = compare_lists([f'Watchlist | {us}.txt', f'{l}.txt'])
+    nw_watched = compare_lists([f'Watched | {us}.txt', f'{l}.txt'], watched=True, watched_list=f'Watched | {your_username}')
+    nw_watchlisted = compare_lists([f'Watchlist | {us}.txt', f'{l}.txt'], watched=True, watched_list=f'Watched | {your_username}')
+
+    all_movies = len(watched_movies) + len(watchlisted)
+    not_watched = len(nw_watched)+ len(nw_watchlisted)
+
+    try:
+      if int(round(not_watched/all_movies*100,0)) != 0:
+        print(f'{us}, {100 - int(round(not_watched/all_movies*100,0))}%')
+
+    except:
+      pass
+
 
 def get_watched_comparison(your_username:str, users:list=[], all:bool=False, this_year=False):
   if your_username in users:
@@ -119,7 +139,7 @@ def get_watched_comparison(your_username:str, users:list=[], all:bool=False, thi
   for k, v in user_dict.items():
     print(f'{k}: {v} | {int(round(100*v/you-100))}% | {v-you}')
   if not all:
-    print(f'rmnt_: {you}')
+    print(f'{your_username}: {you}')
 
 
 def rewrite_list_up_to(file:str, index:int, folder):
