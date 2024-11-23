@@ -200,6 +200,33 @@ def add_watched(movie:str, year:str, folder:str, user:str) -> None:
           f.write(f'{wlm}\n')
 
 
+def get_movies_that_user_saw(user, folder, comp_list, exclude=False, exclude_list=None):
+  movies = []
+
+  file_name = f'gdrive/MyDrive/{folder}/Watched | {user}.txt'
+  goal_file_name = f'gdrive/MyDrive/{folder}/{comp_list}.txt'
+
+  if os.path.exists(file_name):
+      with open(file_name, 'r') as f:
+        l = f.readlines()
+        l = [el[:-1] for el in l]
+      movies.extend(l)
+
+  if os.path.exists(goal_file_name):
+      with open(goal_file_name, 'r') as f:
+        mine = f.readlines()
+        mine = [m[:-1] for m in mine]
+
+  inters = set(movies) & set(mine)
+
+  if exclude and exclude_list:
+    excl =  _read_list(exclude_list)
+
+    return inters - set(excl)
+  else:
+    return inters
+
+
 def get_who_saw(movie:str, users:list, folder) -> list:
   saw = []
   for u in users:
@@ -215,6 +242,7 @@ def get_who_saw(movie:str, users:list, folder) -> list:
         l = [el[:-1] for el in l]
         if movie in l:
           saw.append(u)
+  
   return saw
 
 
