@@ -100,15 +100,15 @@ def _get_watched_num(user: str, this_year=False):
   return int(inter)
 
 
-def get_percentage_watched(user_list, your_username, l:list):
+def get_percentage_watched(user_list, your_username, l:list, folder):
   if your_username in user_list:
     user_list.remove(your_username)
 
   for us in user_list:
-    watched_movies = compare_lists([f'Watched | {us}.txt', f'{l}.txt'])
-    watchlisted = compare_lists([f'Watchlist | {us}.txt', f'{l}.txt'])
-    nw_watched = compare_lists([f'Watched | {us}.txt', f'{l}.txt'], watched=True, watched_list=f'Watched | {your_username}')
-    nw_watchlisted = compare_lists([f'Watchlist | {us}.txt', f'{l}.txt'], watched=True, watched_list=f'Watched | {your_username}')
+    watched_movies = compare_lists([f'Watched | {us}.txt', f'{l}.txt'], folder)
+    watchlisted = compare_lists([f'Watchlist | {us}.txt', f'{l}.txt'], folder)
+    nw_watched = compare_lists([f'Watched | {us}.txt', f'{l}.txt'], folder, watched=True, watched_list=f'Watched | {your_username}')
+    nw_watchlisted = compare_lists([f'Watchlist | {us}.txt', f'{l}.txt'], folder, watched=True, watched_list=f'Watched | {your_username}')
 
     all_movies = len(watched_movies) + len(watchlisted)
     not_watched = len(nw_watched)+ len(nw_watchlisted)
