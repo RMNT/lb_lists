@@ -47,6 +47,41 @@ def _get_num_of_pages(author, which:str):
   last_page = _get_last_page(soup)
   return last_page
 
+def _get_last_movie(link:str):
+  html = _get_html(link)
+  soup = html.find_all("div", class_="poster")
+  last_movie = soup[-1]
+  movie_link = f'https://letterboxd.com{last_movie["data-film-slug"]}'
+  return _get_title_and_year(movie_link)
+
+
+def _get_last_movies(link, pages:int) -> list:
+  return [_get_last_movie(f'{link}/page/{i}/') for i in range(1, pages+1)]
+
+
+def _get_last_movie_index(movie:str, file:str,folder) -> str:
+  with open(f'gdrive/MyDrive/{folder}/{file}', "r") as f:
+    films = f.read().split('\n')
+  try:
+    return films.index(movie)
+  except:
+    return None
+
+
+def get_full_pages(link:str, file_:str, folder):
+  html = _get_html(link)
+  last_page = _get_last_page(html)
+  last_movies = _get_last_movies(link, last_page)
+  last_index = []
+  for lm in last_movies:
+    ind = _get_last_movie_index(lm, file_, folder)
+    if ind != None:
+      last_index.append(ind)
+    else:
+      last_index.append(None)
+      break
+  return last_index.index(None),last_index
+
 
 def rewrite_list_up_to(file:str, index:int,folder):
   with open(f'gdrive/MyDrive/{folder}/{file}', 'r') as f:
