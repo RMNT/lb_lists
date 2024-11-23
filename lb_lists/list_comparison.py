@@ -38,6 +38,25 @@ def get_user_files(folder:str, exclude:list=[]):
   return watched
 
 
+def _get_num_of_pages(author, which:str):
+  if which == "watched":
+    url = 'https://letterboxd.com/' + author + '/films'
+  else:
+     url = 'https://letterboxd.com/' + author + '/watchlist'
+  soup = _get_html(url)
+  last_page = _get_last_page(soup)
+  return last_page
+
+
+def get_sorted_page_dict(l:list, which) -> list:
+  page_nums = []
+  for us in l:
+    page_nums.append(_get_num_of_pages(us, which))
+
+  user_pages = {up:page_num for up, page_num in zip(l, page_nums)}
+  return list({k: v for k, v in sorted(user_pages.items(), key=lambda item: item[1])}.keys())
+
+
 def get_all_files(folder:str, exclude:list=[]):
   lb_lists = []
 
