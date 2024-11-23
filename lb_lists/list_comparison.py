@@ -17,6 +17,46 @@ def movie_strip(movie):
   return movie
 
 
+def get_all_users(l:list) -> list:
+  return list(set([w.split(' ')[-1].split('.')[0] for w in l]))
+
+
+def get_user_files(folder:str, exclude:list=[]):
+  watched = []
+  ed = 'Watched'
+  li = 'Watchlist'
+
+  with open(f'gdrive/MyDrive/{folder}/requests.txt', 'w+') as f:
+   files = os.listdir(f'gdrive/MyDrive/{folder}')
+   
+   for fil in files:
+     if fil.endswith('.txt') and '|' in fil and ((fil[:len(ed)] == ed) or (fil[:len(li)] == li)) and fil not in exclude:
+       lst, author = fil.split(' | ')
+       author = author.split('.')[0]
+       watched.append(fil)
+  
+  return watched
+
+
+def get_all_files(folder:str, exclude:list=[]):
+  lb_lists = []
+
+  if not os.path.exists(f'gdrive/MyDrive/{folder}/requests.txt'):
+    with open(f'gdrive/MyDrive/{folder}/requests.txt', 'w') as f:
+      pass
+
+  with open(f'gdrive/MyDrive/{folder}/requests.txt', 'w+') as f:
+    files = os.listdir(f'gdrive/MyDrive/{folder}')
+    
+    for fil in files:
+      if fil.endswith('.txt') and fil not in exclude and ('|' in fil) and fil not in exclude:
+        _, author = fil.split(' | ')
+        author = author.split('.')[0]
+        lb_lists.append(fil)
+  
+  return lb_lists
+
+
 def add_watched(movie:str, year:str, folder:str, user:str) -> None:
   movie = movie_strip(movie)
 
