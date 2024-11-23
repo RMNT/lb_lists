@@ -200,6 +200,24 @@ def add_watched(movie:str, year:str, folder:str, user:str) -> None:
           f.write(f'{wlm}\n')
 
 
+def get_who_saw(movie:str, users:list, folder) -> list:
+  saw = []
+  for u in users:
+    if os.path.exists(f'gdrive/MyDrive/{folder}/Watchlist | {u}.txt'):
+      with open(f'gdrive/MyDrive/{folder}/Watchlist | {u}.txt', 'r') as f:
+        l = f.readlines()
+        l = [el[:-1] for el in l]
+        if movie in l:
+          saw.append(u)
+    if os.path.exists(f'gdrive/MyDrive/{folder}/Watched | {u}.txt'):
+      with open(f'gdrive/MyDrive/{folder}/Watched | {u}.txt', 'r') as f:
+        l = f.readlines()
+        l = [el[:-1] for el in l]
+        if movie in l:
+          saw.append(u)
+  return saw
+
+
 def add_watchlisted(movie:str, year:str, folder:str, user:str):
   movie = movie_strip(movie)
 
