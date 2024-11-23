@@ -48,6 +48,15 @@ def _get_num_of_pages(author, which:str):
   return last_page
 
 
+def rewrite_list_up_to(file:str, index:int,folder):
+  with open(f'gdrive/MyDrive/{folder}/{file}', 'r') as f:
+    films = f.read().split('\n')
+  films = films[:index]
+  with open(f'gdrive/MyDrive/{folder}/{file}', 'w') as f:
+    for m in films:
+      f.write(m+'\n')
+
+
 def get_sorted_page_dict(l:list, which) -> list:
   page_nums = []
   for us in l:
